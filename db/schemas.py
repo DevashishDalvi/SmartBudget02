@@ -67,9 +67,7 @@ sql_statements = [
 for sql_statement in sql_statements:
     con.execute(sql_statement)
     print(
-        f"Executed: {
-            sql_statement.split('(', maxsplit=1)[0].replace('CREATE TABLE ', '')
-        }"
+        f"Executed: {sql_statement.split('(', maxsplit=1)[0].replace('CREATE TABLE ', '')}"
     )
 
 # Verify table creation
