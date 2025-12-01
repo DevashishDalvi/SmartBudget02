@@ -1,6 +1,6 @@
-import duckdb
-
 """Schmeas are stored here"""
+
+import duckdb
 
 PATH = ""
 con = duckdb.connect(database=PATH)
