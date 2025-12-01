@@ -1,4 +1,5 @@
-def main():
+def main() -> None:
+    """Code for function main()"""
     print("Hello from smartbudget02!")
 
 

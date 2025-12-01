@@ -1,7 +1,9 @@
 import duckdb
 
-path = ""
-con = duckdb.connect(database=path)
+"""Schmeas are stored here"""
+
+PATH = ""
+con = duckdb.connect(database=PATH)
 
 sql_statements = [
     """CREATE TABLE expenses (
@@ -64,7 +66,11 @@ sql_statements = [
 
 for sql_statement in sql_statements:
     con.execute(sql_statement)
-    print(f"Executed: {sql_statement.split('(')[0].replace('CREATE TABLE ', '')}")
+    print(
+        f"Executed: {
+            sql_statement.split('(', maxsplit=1)[0].replace('CREATE TABLE ', '')
+        }"
+    )
 
 # Verify table creation
 print("\nTables created in DuckDB:")

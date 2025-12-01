@@ -10,3 +10,36 @@ dependencies = [
     "openpyxl>=3.1.5",
     "pandas>=2.3.3",
 ]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.14.7",
+]
+
+[tool.ruff]
+# Set the line length to match your formatter (e.g., Black's default)
+line-length = 88
+target-version = "py310" # Adjust to your Python version
+
+[tool.ruff.lint]
+# Extend the default rule selection to include many more checks.
+# Add prefixes for rule sets you want to enable.
+# Some common strict rule sets include:
+# I: isort
+# C: mccabe complexity (C901)
+# B: bugbear
+# A: builtins
+# PIE: flake8-pie
+# ANN: flake8-annotations
+# T20: flake8-print
+# RUF: Ruff specific rules
+select = ["E", "F", "I", "C", "B", "A", "PIE", "ANN", "T20", "RUF"]
+
+# Exclude specific rules if they are too strict for your project, e.g.,
+# ANN101: missing type annotation for self/cls
+# T201: print found
+ignore = ["ANN101", "T201"]
+
+# Allow auto-fixing for all enabled rules
+fixable = ["ALL"]
+unfixable = []
