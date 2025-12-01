@@ -8,11 +8,47 @@
 # database or a cache. For examples, see the Awesome Compose repository:
 # https://github.com/docker/awesome-compose
 services:
-  server:
+  etl:
     build:
       context: .
+      dockerfile: docker/etl/Dockerfile
+    env_file:
+        - .env
+    volumes:
+      - ./data:/app/data
+      - ./scripts:/app/scripts
+      - ./db:/app/db
+      - ./config.yml:/app/config.yml
+    command: >
+      sh -c "
+      python scripts/init_db.py &&
+      python scripts/ingest_google_sheet.py
+      "
+    depends_on:
+      - superset
+
+  superset:
+    image: apache/superset:latest
+    container_name: superset
     ports:
-      - 8000:8000
+      - "8088:8088"
+    volumes:
+      - ./db:/app/db
+      - superset_home:/superset_home
+    environment:
+      - SUPERSET_SECRET_KEY=dev_secret_key
+    command: >
+      sh -c "
+      superset db upgrade &&
+      superset fab create-admin --username admin --password admin
+                               --firstname Admin --lastname User
+                               --email admin@local.dev &&
+      superset init &&
+      superset run -h 0.0.0.0 -p 8088
+      "
+
+volumes:
+  superset_home:
 
 # The commented out section below is an example of how to define a PostgreSQL
 # database that your application can use. `depends_on` tells Docker Compose to
