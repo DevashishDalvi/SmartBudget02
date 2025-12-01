@@ -1,7 +1,8 @@
 [project]
 name = "smartbudget02"
 version = "0.1.0"
-description = "Add your description here"
+description = "ETL and analysis for Smart Budget project"
+author = ["DevashishDalvi <92207754+DevashishDalvi@users.noreply.github.com>"]
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
