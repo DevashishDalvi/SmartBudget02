@@ -1,3 +1,8 @@
+"""
+Main: Entry point of the project
+"""
+
+
 def main() -> None:
     """Code for function main()"""
     print("Hello from smartbudget02!")
