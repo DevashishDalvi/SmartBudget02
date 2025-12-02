@@ -20,10 +20,10 @@ jobs:
       run: |
         pip install uv
         uv venv --seed # Use --seed to install required packages like pip/setuptools into venv
-        ./venv/bin/pip install pylint # Install pylint using the venv's pip
-        ./venv/bin/uv sync
+        .venv/bin/pip install pylint # Install pylint using the venv's pip
+        .venv/bin/uv sync
 
     - name: Analysing the code with pylint
       # Run pylint using the specific executable inside the venv path
       run: |
-        ./venv/bin/pylint $(git ls-files '*.py')
+        .venv/bin/pylint $(git ls-files '*.py')
