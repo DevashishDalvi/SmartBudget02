@@ -1,9 +1,9 @@
 """Schmeas are stored here"""
 
-import duckdb
+from duckdb import connect
 
 PATH = ""
-con = duckdb.connect(database=PATH)
+con = connect(database=PATH)
 
 sql_statements = [
     """CREATE TABLE expenses (
