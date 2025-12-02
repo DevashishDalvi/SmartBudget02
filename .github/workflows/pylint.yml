@@ -19,11 +19,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install pylint
         pip install uv
-    - name: Setup Project
+    - name: Setup Project and Analysing the code with pylint
       run: |
         uv venv
         source .venv/bin/activate
         uv sync
-    - name: Analysing the code with pylint
-      run: |
         pylint $(git ls-files '*.py')
