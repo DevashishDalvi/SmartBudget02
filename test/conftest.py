@@ -1,7 +1,13 @@
-# content of test_sample.py
-def func(x):  # noqa: ANN001, ANN201
-    return x + 1
+# File: tests/conftest.py
+import pytest
+
+from src.SmartBudget.utils.logger import setup_logging
 
 
-def test_answer() -> None:
-    assert func(3) == 5
+@pytest.fixture(scope="session", autouse=True)
+def configure_test_env() -> None:
+    """
+    Auto-runs once before any tests start.
+    Sets up logging so tests have clean output.
+    """
+    setup_logging()
