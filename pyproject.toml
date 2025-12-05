@@ -41,3 +41,12 @@ ignore = ["ANN101"]
 # Allow auto-fixing for all enabled rules
 fixable = ["ALL"]
 unfixable = []
+
+# pyproject.toml
+# [tool.pytest]
+# minversion = "9.0"
+# addopts = ["-ra", "-q"]
+# testpaths = [
+#     "tests",
+#     "integration",
+# ]

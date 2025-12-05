@@ -1,3 +1,5 @@
+# setup only for public repo
+# for private repo: https://docs.astral.sh/uv/guides/integration/github/#private-repos
 name: CI Quality Gate
 
 on: [push, pull_request]
@@ -6,13 +8,22 @@ jobs:
   quality:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v1
+      - uses: actions/checkout@v5
 
       - name: Set up Python
-        run: uv python install 3.10
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: "pyproject.toml"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          version: "0.9.15"
+
+      - name: Enable caching
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
 
       - name: Install dependencies
         run: uv sync
@@ -23,4 +34,7 @@ jobs:
           uv run ruff format --check .
 
       - name: Run Tests
-        run: uv run pytest tests/
+        run: uv run pytest test/
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
