@@ -1,6 +1,7 @@
 # File: src/smart_budget/utils/logger.py
 import logging
 import sys
+from datetime import date
 
 from loguru import logger
 
@@ -54,12 +55,27 @@ def setup_logging() -> None:
         "<level>{message}</level>"
     )
 
-    # Add the sink (Destination)
+    # Add the sink (Destination: Console)
     logger.add(
         sys.stderr,
         level=settings.LOG_LEVEL,
         format=log_format,
         colorize=True,  # Docker logs support colors, looks nice
+        backtrace=True,
+        filter=lambda record: record["level"].no >= 30,  # WARNING+
+        # Show variables in exception traces
+        # (Security risk in strict prod, ok for MVP)
+        diagnose=True,
+    )
+
+    # Add the sink (Destination: logs/*)
+    logger.add(
+        f"logs/log{date.today().strftime('%y/%m/%d').replace('/', '')}.json",
+        level=settings.LOG_LEVEL,
+        format=log_format,
+        serialize=True,
+        rotation="10 MB",
+        # colorize=True,  # Docker logs support colors, looks nice
         backtrace=True,
         # Show variables in exception traces
         # (Security risk in strict prod, ok for MVP)

@@ -1,7 +1,12 @@
+SHELL := pwsh
+.SHELLFLAGS := -NoProfile -Command
+
 .PHONY: install format lint test run
 
+all: install format lint test
+
 install:
-	uv pip sync pyproject.toml
+	uv sync
 
 format:
 	uv run ruff format .
@@ -14,3 +19,9 @@ test:
 
 run-etl:
 	uv run python -m src.smart_budget.etl.pipelines
+
+# log:
+# 	Get-Content logs/*
+#
+# del_logs:
+# 	del logs/*
