@@ -22,16 +22,16 @@ def transform_and_load(db_path: str):
     con.execute("""
         INSERT INTO expenses (expense_id, occurred_at, product_name, quantity, unit_price, amount, category_id, notes, source_system, source_row_id)
         SELECT
-            abs(hash(raw.transaction_id::VARCHAR)) AS expense_id,
+            abs(hash(raw.id::VARCHAR)) AS expense_id,
             strptime(raw.date, '%Y-%m-%d')::TIMESTAMP,
-            raw.description,
+            raw.item,
             1,
-            CAST(raw.amount AS DOUBLE),
-            CAST(raw.amount AS DOUBLE),
+            CAST(raw.price AS DOUBLE),
+            CAST(raw.price AS DOUBLE),
             cm.category_id,
-            NULL, -- notes are not in the sample csv
+            raw.notes,
             'google_sheets',
-            raw.transaction_id::VARCHAR
+            raw.id::VARCHAR
         FROM raw_source_google raw
         LEFT JOIN category_mappings cm ON raw.category = cm.raw_value AND cm.source_system = 'google_sheets'
         ON CONFLICT (expense_id) DO UPDATE SET

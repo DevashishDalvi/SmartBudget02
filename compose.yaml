@@ -41,7 +41,5 @@ services:
   etl:
     build: .
     volumes:
-      # Mount the DuckDB volume to write the DB file
-      - smartbudget_db_volume:/app/data
-      # Mount the sample data as read-only
-      - ./data:/app/data/ro:ro
+      # Mount the data volume to read the CSV and write the DB file
+      - ./data:/app/data
