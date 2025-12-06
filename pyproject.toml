@@ -1,13 +1,15 @@
-[project]
-name = "smartbudget02"
+[tool.poetry]
+name = "smartbudget"
 version = "0.1.0"
 description = "ETL and analysis for Smart Budget project"
-author = ["DevashishDalvi <92207754+DevashishDalvi@users.noreply.github.com>"]
+authors = ["DevashishDalvi <92207754+DevashishDalvi@users.noreply.github.com>"]
 readme = "README.md"
-requires-python = ">=3.14"
-dependencies = [
-    "duckdb>=1.4.2",
-    "duckdb-engine>=0.17.0",
-    "openpyxl>=3.1.5",
-    "pandas>=2.3.3",
-]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.10"
+duckdb = "^0.10.0"
+pandas = "^2.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

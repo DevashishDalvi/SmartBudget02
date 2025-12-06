@@ -3,9 +3,9 @@ FROM python:3.9-alpine
 WORKDIR /app
 
 # Install build dependencies, then remove them
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential && \
+RUN apk update && apk add --no-cache build-base && \
     pip install --no-cache-dir poetry && \
-    apt-get remove -y build-essential && apt-get autoremove -y && rm -rf /var/lib/apt/lists/*
+    apk del build-base && rm -rf /var/cache/apk/*
 
 # Copy only the files needed for dependency installation
 COPY pyproject.toml poetry.lock ./
