@@ -1,5 +1,5 @@
-SHELL := pwsh
-.SHELLFLAGS := -NoProfile -Command
+# SHELL := pwsh
+# .SHELLFLAGS := -NoProfile -Command
 
 .PHONY: install format lint test run
 

@@ -8,6 +8,7 @@ dependencies = [
     "duckdb>=1.4.2",
     "duckdb-engine>=0.17.0",
     "loguru>=0.7.3",
+    "openpyxl>=3.1.5",
     "pandas>=2.3.3",
     "pre-commit>=4.5.0",
     "pytest>=9.0.1",
@@ -36,11 +37,16 @@ select = ["E", "F", "I", "C", "B", "A", "PIE", "ANN", "T20", "RUF"]
 # Exclude specific rules if they are too strict for your project, e.g.,
 # ANN101: missing type annotation for self/cls
 # T201: print found
-ignore = ["ANN101"]
+# ignore = ["ANN101", "ANN102"]
 
 # Allow auto-fixing for all enabled rules
 fixable = ["ALL"]
 unfixable = []
+
+[dependency-groups]
+dev = [
+    "ipython>=9.8.0",
+]
 
 # pyproject.toml
 # [tool.pytest]
