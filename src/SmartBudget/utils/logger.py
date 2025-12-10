@@ -5,7 +5,7 @@ from datetime import date
 
 from loguru import logger
 
-from src.SmartBudget.config import settings
+from SmartBudget.config import settings
 
 
 class InterceptHandler(logging.Handler):
@@ -23,10 +23,14 @@ class InterceptHandler(logging.Handler):
             level = record.levelno
 
         # Find caller from where originated the logged message
-        frame, depth = logging.currentframe(), 2
-        while frame.f_code.co_filename == logging.__file__:
-            frame = frame.f_back
-            depth += 1
+        frame = logging.currentframe()
+        depth = 2
+        while frame is not None:  # pyre-ignore[7]
+            if frame.f_code.co_filename == logging.__file__:
+                frame = frame.f_back  # pyre-ignore[7]
+                depth += 1
+            else:
+                break
 
         logger.opt(depth=depth, exception=record.exc_info).log(
             level, record.getMessage()
@@ -41,13 +45,8 @@ def setup_logging() -> None:
     3. Set format based on environment.
     """
 
-    # Remove default logger
-    # (which prints to stderr by default with default format)
     logger.remove()
 
-    # Define the format.
-    # In local dev: Human readable with colors.
-    # In prod: structured or simplified (we keep human readable for this MVP).
     log_format = (
         "<green>{time:YYYY-MM-DD HH:mm:ss}</green> | "
         "<level>{level: <8}</level> | "
@@ -55,41 +54,28 @@ def setup_logging() -> None:
         "<level>{message}</level>"
     )
 
-    # Add the sink (Destination: Console)
     logger.add(
         sys.stderr,
         level=settings.LOG_LEVEL,
         format=log_format,
-        colorize=True,  # Docker logs support colors, looks nice
+        colorize=True,
         backtrace=True,
-        filter=lambda record: record["level"].no >= 30,  # WARNING+
-        # Show variables in exception traces
-        # (Security risk in strict prod, ok for MVP)
         diagnose=True,
     )
 
-    # Add the sink (Destination: logs/*)
     logger.add(
-        f"logs/log{date.today().strftime('%y/%m/%d').replace('/', '')}.json",
+        f"logs/log{date.today().strftime('%y%m%d')}.json",
         level=settings.LOG_LEVEL,
         format=log_format,
         serialize=True,
         rotation="10 MB",
-        # colorize=True,  # Docker logs support colors, looks nice
         backtrace=True,
-        # Show variables in exception traces
-        # (Security risk in strict prod, ok for MVP)
         diagnose=True,
     )
 
-    # Intercept standard logging
     logging.basicConfig(handlers=[InterceptHandler()], level=0, force=True)
-
-    # Mute noisy libraries if needed (optional)
-    # logging.getLogger("urllib3").setLevel(logging.WARNING)
 
     logger.info(f"Logging configured. Level: {settings.LOG_LEVEL}")
 
 
-# Expose the logger for easy import
 __all__ = ["logger", "setup_logging"]
